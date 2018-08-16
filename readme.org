@@ -1,0 +1,8 @@
+#+TITLE:利用 qt 作一个简单的键盘
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" type="text/css" href="../../css/readtheorg.css" />
+#+OPTIONS: ^:nil
+
+
+* Table of Contents                                         :TOC_4_org:noexport:
+
+* 网上拷了一段代码，在他的基础上修改的。
