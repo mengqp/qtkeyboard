@@ -209,6 +209,9 @@ void CKbInput::InitProperty()
     for (int i = 0; i < 9; i++) {
         labCh[i]->installEventFilter(this);
     }
+
+    // 将隐藏关闭
+    ui->btnClose->hide();
 }
 
 void CKbInput::ShowPanel()
