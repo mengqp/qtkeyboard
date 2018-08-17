@@ -78,6 +78,7 @@ private slots:
 private:
     Ui::CKbInput *ui;
     static CKbInput *_instance;     //实例对象
+    QWidget *m_widgetLast;          // 上一个键盘显示界面
 
     int deskWidth;                  //桌面宽度
     int deskHeight;                 //桌面高度

@@ -76,6 +76,7 @@ private slots:
 private:
     Ui::CKbNum *ui;
     static CKbNum *_instance;       //实例对象
+    QWidget *m_widgetLast;          // 上一个键盘显示界面
 
     bool isPress;                   //是否长按退格键
     QPushButton *btnPress;          //长按按钮

@@ -89,6 +89,7 @@ void CKbInput::InitForm()
         qDebug("DbConn.open failed");
     }
 
+    m_widgetLast = NULL;
     isFirst = true;
     isPress = false;
     timerPress = new QTimer(this);
@@ -378,13 +379,18 @@ void CKbInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
         return ;
     }
 
-    if (this->isVisible() )
-    {
-        return;
-    }
 
     //qDebug() << "oldWidget:" << oldWidget << " nowWidget:" << nowWidget;
     if (nowWidget != 0 && !this->isAncestorOf(nowWidget)) {
+
+        if (this->isVisible() && nowWidget == m_widgetLast )
+        {
+            return;
+        }
+        else
+        {
+            m_widgetLast = nowWidget;
+        }
         //在 Qt5 和 linux 系统中(嵌入式 linux 除外),当输入法面板关闭时,焦点会变成无,然后焦点会再次移到焦点控件处
         //这样导致输入法面板的关闭按钮不起作用,关闭后马上有控件获取焦点又显示.
         //为此,增加判断,当焦点是从有对象转为无对象再转为有对象时不要显示.

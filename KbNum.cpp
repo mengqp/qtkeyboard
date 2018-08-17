@@ -69,6 +69,7 @@ void CKbNum::InitForm() //
     timerPress = new QTimer(this);
     connect(timerPress, SIGNAL(timeout()), this, SLOT(reClicked()));
     currentWidget = 0;
+    m_widgetLast = NULL;
 
     //如果需要更改输入法面板的样式,改变 currentStyle 这个变量即可
     //blue--淡蓝色  dev--dev 风格  black--黑色  brown--灰黑色  lightgray--浅灰色  darkgray--深灰色  gray--灰色  silvery--银色
@@ -119,13 +120,19 @@ void CKbNum::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
         return ;
     }
 
-    if (this->isVisible() )
-    {
-        return;
-    }
-
     //qDebug() << "oldWidget:" << oldWidget << " nowWidget:" << nowWidget;
+    // 点击相同焦点时可移动，及点击不同焦点时可重新显示
     if (nowWidget != 0 && !this->isAncestorOf(nowWidget)) {
+
+        if (this->isVisible() && nowWidget == m_widgetLast )
+        {
+            return;
+        }
+        else
+        {
+            m_widgetLast = nowWidget;
+        }
+
         //在 Qt5 和 linux 系统中(嵌入式 linux 除外),当输入法面板关闭时,焦点会变成无,然后焦点会再次移到焦点控件处
         //这样导致输入法面板的关闭按钮不起作用,关闭后马上有控件获取焦点又显示.
         //为此,增加判断,当焦点是从有对象转为无对象再转为有对象时不要显示.
