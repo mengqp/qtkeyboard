@@ -13,6 +13,7 @@
  ******************************************************************************/
 
 #include <QApplication>
+#include <QTextCodec>
 #include "Widget.h"
 #include "KbNum.h"
 #include "KbInput.h"
@@ -20,6 +21,11 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv );
+    //QT5 版本以上默认就是采用 UTF-8 编码
+    QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+    QTextCodec::setCodecForLocale(codec);
+    QTextCodec::setCodecForCStrings(codec);
+    QTextCodec::setCodecForTr(codec);
 
     CKbNum::Instance()->Init("brown",10);//set brown--灰黑色
     CKbInput::Instance()->Init("control", "black", 10, 10);
