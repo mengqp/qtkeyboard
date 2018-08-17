@@ -36,4 +36,5 @@ fi
 $QMAKE -project -Wall  -o  ./qtkeyboard.pro -after "TARGET=./release/qtkeyboard" $CONFIG  "OBJECTS_DIR = ./build/obj/" "MOC_DIR = build/moc/" "UI_DIR=build/ui" "QT += gui core sql xml"
 $QMAKE -makefile ./qtkeyboard.pro   -o ./Makefile
 
-make
+# 如果没有 bear 可以直接 make
+bear make

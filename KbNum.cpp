@@ -47,7 +47,6 @@ void CKbNum::mouseMoveEvent(QMouseEvent *e)
 }
 void CKbNum::mousePressEvent(QMouseEvent *e)
 {
-    printf("mousepressevent\n");
     if (e->button() == Qt::LeftButton) {
         mousePressed = true;
         mousePoint = e->globalPos() - this->pos();
@@ -107,6 +106,10 @@ void CKbNum::InitProperty()
     ui->btnDot->setProperty("btnOther", true);
     ui->btnSpace->setProperty("btnOther", true);
     ui->btnDelete->setProperty("btnOther", true);
+
+    // 不显示空格和关闭
+    ui->btnSpace->hide();
+    ui->btnClose->hide();
 }
 
 void CKbNum::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
@@ -199,7 +202,7 @@ bool CKbNum::eventFilter(QObject *obj, QEvent *event)
 
     if (event->type() == QEvent::MouseButtonPress) {
         if (currentEditType != "") {
-            if (obj != ui->btnClose) {
+            if (obj != ui->btnSwitch) {
                 // this->setVisible(true);
             }
             btnPress = (QPushButton *)obj;
@@ -254,10 +257,10 @@ void CKbNum::btn_clicked()
     QString objectName = btn->objectName();
     if (objectName == "btnDelete") {
         deleteValue();
-    } else if (objectName == "btnClose") {
+    } else if (objectName == "btnSwitch") {
         setkeyboardmode(1);
         this->setVisible(false);
-    } else if (objectName == "btnEnter") {
+    } else if (objectName == "btnClose") {
         this->setVisible(false);
         isClose = true;
     } else if (objectName == "btnSpace") {
@@ -349,7 +352,7 @@ void CKbNum::changeStyle(QString topColor, QString bottomColor, QString borderCo
                .arg(topColor).arg(bottomColor));
     qss.append(QString("QLabel,QPushButton{font-size:%1pt;color:%2;}")
                .arg(currentFontSize).arg(textColor));
-    qss.append(QString("QPushButton#btnPre,QPushButton#btnNext,QPushButton#btnClose{padding:5px;}"));
+    qss.append(QString("QPushButton#btnPre,QPushButton#btnNext,QPushButton#btnSwitch{padding:5px;}"));
     qss.append(QString("QPushButton{border:1px solid %1;}")
                .arg(borderColor));
     qss.append(QString("QLineEdit{border:1px solid %1;border-radius:5px;padding:2px;background:none;selection-background-color:%2;selection-color:%3;}")
