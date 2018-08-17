@@ -1,12 +1,25 @@
-#include "frmnum.h"
-#include "ui_frmnum.h"
+/*******************************************************************************
+ * 文件名:KbNum.cpp
+ * 文件描述:见头文件
+ * 创建日期:2018/08/16 11:58:25
+ * 版本：Ver1.0
+ *
+ * Copyright © 2018 - 2018 mengqp.
+ *
+ * 历史版本：
+ * 修改人                修改时间                修改版本        修改内容
+ *
+ *
+ ******************************************************************************/
+#include "KbNum.h"
+#include "ui_KbNum.h"
 #include "qdebug.h"
 #include "Global.h"
 
-frmNum *frmNum::_instance = 0;
-frmNum::frmNum(QWidget *parent) :
+CKbNum *CKbNum::_instance = 0;
+CKbNum::CKbNum(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::frmNum)
+    ui(new Ui::CKbNum)
 {
     ui->setupUi(this);
     this->InitForm();//初始化窗体数据
@@ -14,25 +27,25 @@ frmNum::frmNum(QWidget *parent) :
     this->ChangeStyle();//改变样式
 }
 
-frmNum::~frmNum()
+CKbNum::~CKbNum()
 {
     delete ui;
 }
 
-void frmNum::Init(QString style, int fontSize) {
+void CKbNum::Init(QString style, int fontSize) {
     this->currentStyle = style;
     this->currentFontSize = fontSize;
     this->ChangeStyle();
 }
 
-void frmNum::mouseMoveEvent(QMouseEvent *e)
+void CKbNum::mouseMoveEvent(QMouseEvent *e)
 {
     if (mousePressed && (e->buttons() && Qt::LeftButton)) {
         this->move(e->globalPos() - mousePoint);
         e->accept();
     }
 }
-void frmNum::mousePressEvent(QMouseEvent *e)
+void CKbNum::mousePressEvent(QMouseEvent *e)
 {
     printf("mousepressevent\n");
     if (e->button() == Qt::LeftButton) {
@@ -42,12 +55,12 @@ void frmNum::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void frmNum::mouseReleaseEvent(QMouseEvent *)
+void CKbNum::mouseReleaseEvent(QMouseEvent *)
 {
     mousePressed = false;
 }
 
-void frmNum::InitForm() //
+void CKbNum::InitForm() //
 {
     this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
 
@@ -77,7 +90,7 @@ void frmNum::InitForm() //
     qApp->installEventFilter(this);
 }
 
-void frmNum::InitProperty()
+void CKbNum::InitProperty()
 {
     ui->btn0->setProperty("btnNum", true);
     ui->btn1->setProperty("btnNum", true);
@@ -96,7 +109,7 @@ void frmNum::InitProperty()
     ui->btnDelete->setProperty("btnOther", true);
 }
 
-void frmNum::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
+void CKbNum::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
 {
     if ( getkeyboardmode() != 0 )
     {
@@ -177,7 +190,7 @@ void frmNum::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
     Q_UNUSED(oldWidget);//未使用参数
 }
 
-bool frmNum::eventFilter(QObject *obj, QEvent *event)
+bool CKbNum::eventFilter(QObject *obj, QEvent *event)
 {
     if ( getkeyboardmode() != 0 )
     {
@@ -211,7 +224,7 @@ bool frmNum::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event);
 }
 
-bool frmNum::checkPress()
+bool CKbNum::checkPress()
 {
     //只有属于数字键盘的合法按钮才继续处理
     bool num_ok = btnPress->property("btnNum").toBool();
@@ -222,7 +235,7 @@ bool frmNum::checkPress()
     return false;
 }
 
-void frmNum::reClicked()
+void CKbNum::reClicked()
 {
     if (isPress) {
         timerPress->setInterval(30);
@@ -230,7 +243,7 @@ void frmNum::reClicked()
     }
 }
 
-void frmNum::btn_clicked()
+void CKbNum::btn_clicked()
 {
     //如果当前焦点控件类型为空,则返回不需要继续处理
     if (currentEditType == "") {
@@ -255,7 +268,7 @@ void frmNum::btn_clicked()
     }
 }
 
-void frmNum::insertValue(QString value)
+void CKbNum::insertValue(QString value)
 {
     if (currentEditType == "QLineEdit") {
         currentLineEdit->insert(value);
@@ -271,7 +284,7 @@ void frmNum::insertValue(QString value)
     }
 }
 
-void frmNum::deleteValue()
+void CKbNum::deleteValue()
 {
     if (currentEditType == "QLineEdit") {
         currentLineEdit->backspace();
@@ -305,7 +318,7 @@ void frmNum::deleteValue()
     }
 }
 
-void frmNum::ChangeStyle()
+void CKbNum::ChangeStyle()
 {
     if (currentStyle == "blue") {
         changeStyle("#DEF0FE", "#C0DEF6", "#C0DCF2", "#386487");
@@ -326,10 +339,10 @@ void frmNum::ChangeStyle()
     }
 }
 
-void frmNum::changeStyle(QString topColor, QString bottomColor, QString borderColor, QString textColor)
+void CKbNum::changeStyle(QString topColor, QString bottomColor, QString borderColor, QString textColor)
 {
     QStringList qss;
-    qss.append(QString("QWidget#frmNum{background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 %1,stop:1 %2);}")
+    qss.append(QString("QWidget#CKbNum{background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 %1,stop:1 %2);}")
                .arg(topColor).arg(bottomColor));
     qss.append("QPushButton{padding:5px;border-radius:3px;}");
     qss.append(QString("QPushButton:hover{background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 %1,stop:1 %2);}")
@@ -352,7 +365,7 @@ void frmNum::changeStyle(QString topColor, QString bottomColor, QString borderCo
  * 被调用:
  * 返回值:void
  ------------------------------------------------------------------------------*/
-void frmNum::ShowKeyBoard(void)
+void CKbNum::ShowKeyBoard(void)
 {
     this->setVisible( true );
 }   /*-------- end class Cfrmnum method ShowKeyBoard -------- */

@@ -14,15 +14,15 @@
 
 #include <QApplication>
 #include "Widget.h"
-#include "frmnum.h"
-#include "frminput.h"
+#include "KbNum.h"
+#include "KbInput.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv );
 
-    frmNum::Instance()->Init("brown",10);//set brown--灰黑色
-    frmInput::Instance()->Init("control", "black", 10, 10);
+    CKbNum::Instance()->Init("brown",10);//set brown--灰黑色
+    CKbInput::Instance()->Init("control", "black", 10, 10);
 
     CWidget w;
     w.show();

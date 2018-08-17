@@ -1,5 +1,20 @@
-#ifndef FRMINPUT_H
-#define FRMINPUT_H
+/*******************************************************************************
+ * 文件名:KbInput.h
+ * 文件描述:可以输入字母数字和简单拼音的键盘
+ * 创建日期:2018/08/16 11:52:14
+ * 版本：Ver1.0
+ *
+ * Copyright © 2018 - 2018 mengqp.
+ *
+ * 历史版本：
+ * 修改人                修改时间                修改版本        修改内容
+ *
+ *
+ ******************************************************************************/
+
+#ifndef KBINPUT_H
+#define KBINPUT_H
+
 
 #include <QWidget>
 #include <QMouseEvent>
@@ -15,21 +30,21 @@
 
 namespace Ui
 {
-    class frmInput;
+class CKbInput;
 }
 
-class frmInput : public QWidget
+class CKbInput : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit frmInput(QWidget *parent = 0);
-    ~frmInput();
+    explicit CKbInput(QWidget *parent = 0);
+    ~CKbInput();
 
     //单例模式,保证一个程序只存在一个输入法实例对象
-    static frmInput *Instance() {
+    static CKbInput *Instance() {
         if (!_instance) {
-            _instance = new frmInput;
+            _instance = new CKbInput;
         }
         return _instance;
     }
@@ -61,8 +76,8 @@ private slots:
     void reClicked();
 
 private:
-    Ui::frmInput *ui;
-    static frmInput *_instance;     //实例对象
+    Ui::CKbInput *ui;
+    static CKbInput *_instance;     //实例对象
 
     int deskWidth;                  //桌面宽度
     int deskHeight;                 //桌面高度
@@ -114,4 +129,11 @@ private:
 
 };
 
-#endif // FRMINPUT_H
+
+
+#endif /* KBINPUT_H */
+
+// This file is set to c + + mode when you set the following content to the bottom and reopen the file
+// Local Variables:
+// mode: c++
+// End:

@@ -1,5 +1,19 @@
-#ifndef FRMNUM_H
-#define FRMNUM_H
+/*******************************************************************************
+ * 文件名:KbNum.h
+ * 文件描述:数字键盘
+ * 创建日期:2018/08/16 11:57:16
+ * 版本：Ver1.0
+ *
+ * Copyright © 2018 - 2018 mengqp.
+ *
+ * 历史版本：
+ * 修改人                修改时间                修改版本        修改内容
+ *
+ *
+ ******************************************************************************/
+
+#ifndef KBNUM_H
+#define KBNUM_H
 
 #include <QWidget>
 #include <QLineEdit>
@@ -13,21 +27,21 @@
 
 namespace Ui
 {
-    class frmNum;
+class CKbNum;
 }
 
-class frmNum : public QWidget
+class CKbNum : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit frmNum(QWidget *parent = 0);
-    ~frmNum();
+    explicit CKbNum(QWidget *parent = 0);
+    ~CKbNum();
 
     //单例模式,保证一个程序只存在一个输入法实例对象
-    static frmNum *Instance() {
+    static CKbNum *Instance() {
         if (!_instance) {
-            _instance = new frmNum;
+            _instance = new CKbNum;
         }
         return _instance;
     }
@@ -60,8 +74,8 @@ private slots:
     void reClicked();
 
 private:
-    Ui::frmNum *ui;
-    static frmNum *_instance;       //实例对象
+    Ui::CKbNum *ui;
+    static CKbNum *_instance;       //实例对象
 
     bool isPress;                   //是否长按退格键
     QPushButton *btnPress;          //长按按钮
@@ -91,4 +105,4 @@ private:
 
 };
 
-#endif // FRMNUM_H
+#endif /* KBNUM_H */

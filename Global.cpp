@@ -13,8 +13,8 @@
  ******************************************************************************/
 
 #include "Global.h"
-#include "frmnum.h"
-#include "frminput.h"
+#include "KbNum.h"
+#include "KbInput.h"
 
 static int gs_keyboardmode = 0;
 
@@ -30,11 +30,11 @@ void setkeyboardmode( int mode )
     gs_keyboardmode =mode;
     if ( 0 == mode )
     {
-        frmNum::Instance()->ShowKeyBoard();
+        CKbNum::Instance()->ShowKeyBoard();
     }
     else
     {
-        frmInput::Instance()->ShowKeyBoard();
+        CKbInput::Instance()->ShowKeyBoard();
     }
 }   /*-------- end setkeyboardmode -------- */
 

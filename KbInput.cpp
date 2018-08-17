@@ -1,12 +1,26 @@
-#include "frminput.h"
-#include "ui_frminput.h"
+/*******************************************************************************
+ * 文件名:KbInput.cpp
+ * 文件描述:见头文件
+ * 创建日期:2018/08/16 11:56:47
+ * 版本：Ver1.0
+ *
+ * Copyright © 2018 - 2018 mengqp.
+ *
+ * 历史版本：
+ * 修改人                修改时间                修改版本        修改内容
+ *
+ *
+ ******************************************************************************/
+
+#include "KbInput.h"
+#include "ui_KbInput.h"
 #include "qdesktopwidget.h"
 #include "Global.h"
 
-frmInput *frmInput::_instance = 0;
-frmInput::frmInput(QWidget *parent) :
+CKbInput *CKbInput::_instance = 0;
+CKbInput::CKbInput(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::frmInput)
+    ui(new Ui::CKbInput)
 {
     ui->setupUi(this);
     this->InitProperty();
@@ -14,12 +28,12 @@ frmInput::frmInput(QWidget *parent) :
     this->ChangeStyle();
 }
 
-frmInput::~frmInput()
+CKbInput::~CKbInput()
 {
     delete ui;
 }
 
-void frmInput::Init(QString position, QString style, int btnFontSize, int labFontSize)
+void CKbInput::Init(QString position, QString style, int btnFontSize, int labFontSize)
 {
     this->currentPosition = position;
     this->currentStyle = style;
@@ -29,7 +43,7 @@ void frmInput::Init(QString position, QString style, int btnFontSize, int labFon
     this->ChangeFont();
 }
 
-void frmInput::mouseMoveEvent(QMouseEvent *e)
+void CKbInput::mouseMoveEvent(QMouseEvent *e)
 {
     if (mousePressed && (e->buttons() && Qt::LeftButton)) {
         this->move(e->globalPos() - mousePoint);
@@ -37,7 +51,7 @@ void frmInput::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
-void frmInput::mousePressEvent(QMouseEvent *e)
+void CKbInput::mousePressEvent(QMouseEvent *e)
 {
     if (e->button() == Qt::LeftButton) {
         mousePressed = true;
@@ -46,12 +60,12 @@ void frmInput::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void frmInput::mouseReleaseEvent(QMouseEvent *)
+void CKbInput::mouseReleaseEvent(QMouseEvent *)
 {
     mousePressed = false;
 }
 
-void frmInput::InitForm()
+void CKbInput::InitForm()
 {
     this->mousePressed = false;
     this->setWindowFlags(Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
@@ -116,7 +130,7 @@ void frmInput::InitForm()
     qApp->installEventFilter(this);
 }
 
-void frmInput::InitProperty()
+void CKbInput::InitProperty()
 {
     // ui->btnOther1->setProperty("btnOther", true);
     // ui->btnOther2->setProperty("btnOther", true);
@@ -197,7 +211,7 @@ void frmInput::InitProperty()
     }
 }
 
-void frmInput::ShowPanel()
+void CKbInput::ShowPanel()
 {
     this->setVisible(true);
 
@@ -212,7 +226,7 @@ void frmInput::ShowPanel()
 }
 
 //事件过滤器,用于识别鼠标单击汉字标签处获取对应汉字
-bool frmInput::eventFilter(QObject *obj, QEvent *event)
+bool CKbInput::eventFilter(QObject *obj, QEvent *event)
 {
     if ( getkeyboardmode() != 1 )
     {
@@ -333,7 +347,7 @@ bool frmInput::eventFilter(QObject *obj, QEvent *event)
     return QWidget::eventFilter(obj, event);
 }
 
-bool frmInput::checkPress()
+bool CKbInput::checkPress()
 {
     //只有属于输入法键盘的合法按钮才继续处理
     bool num_ok = btnPress->property("btnNum").toBool();
@@ -345,7 +359,7 @@ bool frmInput::checkPress()
     return false;
 }
 
-void frmInput::reClicked()
+void CKbInput::reClicked()
 {
     if (isPress) {
         timerPress->setInterval(30);
@@ -353,7 +367,7 @@ void frmInput::reClicked()
     }
 }
 
-void frmInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
+void CKbInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
 {
     if ( getkeyboardmode() != 1 )
     {
@@ -463,7 +477,7 @@ void frmInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
     }
 }
 
-void frmInput::changeType(QString type)
+void CKbInput::changeType(QString type)
 {
     if (type == "max") {
         changeLetter(true);
@@ -498,7 +512,7 @@ void frmInput::changeType(QString type)
     ui->labPY->setText("");
 }
 
-void frmInput::changeLetter(bool isUpper)
+void CKbInput::changeLetter(bool isUpper)
 {
     QList<QPushButton *> btn = this->findChildren<QPushButton *>();
     foreach (QPushButton * b, btn) {
@@ -512,7 +526,7 @@ void frmInput::changeLetter(bool isUpper)
     }
 }
 
-void frmInput::selectChinese()
+void CKbInput::selectChinese()
 {
     clearChinese();
     QSqlQuery query;
@@ -534,7 +548,7 @@ void frmInput::selectChinese()
     showChinese();
 }
 
-void frmInput::showChinese()
+void CKbInput::showChinese()
 {
     //每个版面最多显示 10 个汉字
     int count = 0;
@@ -556,7 +570,7 @@ void frmInput::showChinese()
     //qDebug() << "currentPY_index:" << currentPY_index << "currentPY_count:" << currentPY_count;
 }
 
-void frmInput::btn_clicked()
+void CKbInput::btn_clicked()
 {
     //如果当前焦点控件类型为空,则返回不需要继续处理
     if (currentEditType == "") {
@@ -658,7 +672,7 @@ void frmInput::btn_clicked()
     }
 }
 
-void frmInput::insertValue(QString value)
+void CKbInput::insertValue(QString value)
 {
     if (currentEditType == "QLineEdit") {
         currentLineEdit->insert(value);
@@ -674,7 +688,7 @@ void frmInput::insertValue(QString value)
     }
 }
 
-void frmInput::deleteValue()
+void CKbInput::deleteValue()
 {
     if (currentEditType == "QLineEdit") {
         currentLineEdit->backspace();
@@ -708,7 +722,7 @@ void frmInput::deleteValue()
     }
 }
 
-void frmInput::setChinese(int index)
+void CKbInput::setChinese(int index)
 {
     int count = currentPY.count();
     if (count > index) {
@@ -719,7 +733,7 @@ void frmInput::setChinese(int index)
     }
 }
 
-void frmInput::clearChinese()
+void CKbInput::clearChinese()
 {
     //清空汉字,重置索引
     for (int i = 0; i < 9; i++) {
@@ -731,7 +745,7 @@ void frmInput::clearChinese()
     currentPY_count = 0;
 }
 
-void frmInput::ChangeStyle()
+void CKbInput::ChangeStyle()
 {
     if (currentStyle == "blue") {
         changeStyle("#DEF0FE", "#C0DEF6", "#C0DCF2", "#386487");
@@ -752,7 +766,7 @@ void frmInput::ChangeStyle()
     }
 }
 
-void frmInput::ChangeFont()
+void CKbInput::ChangeFont()
 {
     QFont btnFont(this->font().family(), btnFontSize);
     QFont labFont(this->font().family(), labFontSize);
@@ -771,10 +785,10 @@ void frmInput::ChangeFont()
     ui->btnClose->setFont(labFont);
 }
 
-void frmInput::changeStyle(QString topColor, QString bottomColor, QString borderColor, QString textColor)
+void CKbInput::changeStyle(QString topColor, QString bottomColor, QString borderColor, QString textColor)
 {
     QStringList qss;
-    qss.append(QString("QWidget#frmInput{background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 %1,stop:1 %2);}")
+    qss.append(QString("QWidget#CKbInput{background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 %1,stop:1 %2);}")
                .arg(topColor).arg(bottomColor));
     qss.append("QPushButton{padding:5px;border-radius:3px;}");
     qss.append(QString("QPushButton:hover{background:qlineargradient(spread:pad,x1:0,y1:0,x2:0,y2:1,stop:0 %1,stop:1 %2);}")
@@ -796,7 +810,7 @@ void frmInput::changeStyle(QString topColor, QString bottomColor, QString border
  * 被调用:
  * 返回值:void
  ------------------------------------------------------------------------------*/
-void frmInput::ShowKeyBoard(void)
+void CKbInput::ShowKeyBoard(void)
 {
     ShowPanel();
 }   /*-------- end class Cfrminput method ShowKeyBoard -------- */

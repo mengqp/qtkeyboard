@@ -16,7 +16,7 @@
 #include <QModelIndex>
 #include <QAbstractItemView>
 #include <QApplication>
-#include "frmnum.h"
+#include "KbNum.h"
 
 /*******************************************************************************
  * 功能描述:构造函数
@@ -87,7 +87,7 @@ void CWidget::mousePressEvent(QMouseEvent * pMouseEvent )
         printf("clearfocus\n");
         // m_buttonTest->clearFocus();
         focusWidget->clearFocus();
-        frmNum::Instance()->setVisible( false );
+        CKbNum::Instance()->setVisible( false );
 
         // focusWidget->hide();
     }
