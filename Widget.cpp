@@ -16,7 +16,9 @@
 #include <QModelIndex>
 #include <QAbstractItemView>
 #include <QApplication>
+#include "Global.h"
 #include "KbNum.h"
+#include "KbInput.h"
 
 /*******************************************************************************
  * 功能描述:构造函数
@@ -70,6 +72,22 @@ void CWidget::paintEvent(QPaintEvent * pPaintEvent )
     // }
     // QWidget *focusWidget = QApplication::focusWidget();
 
+    if ( KB_NUM_MODE == GlobalGetKbMode() )
+    {
+        if ( CKbInput::Instance()->isVisible() )
+        {
+            CKbInput::Instance()->setVisible(false);
+            CKbNum::Instance()->ShowKeyBoard();
+        }
+    }
+    else if ( KB_INPUT_MODE == GlobalGetKbMode() )
+    {
+        if ( CKbNum::Instance()->isVisible() )
+        {
+            CKbNum::Instance()->setVisible(false);
+            CKbInput::Instance()->ShowKeyBoard();
+        }
+    }
 
 
 }

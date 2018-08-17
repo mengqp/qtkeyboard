@@ -13,8 +13,6 @@
  ******************************************************************************/
 
 #include "Global.h"
-#include "KbNum.h"
-#include "KbInput.h"
 
 static int gs_keyboardmode = KB_NUM_MODE;
 
@@ -28,14 +26,6 @@ static int gs_keyboardmode = KB_NUM_MODE;
 void GlobalSetKbMode( int mode )
 {
     gs_keyboardmode =mode;
-    if ( KB_NUM_MODE == mode )
-    {
-        CKbNum::Instance()->ShowKeyBoard();
-    }
-    else if ( KB_INPUT_MODE == mode )
-    {
-        CKbInput::Instance()->ShowKeyBoard();
-    }
 }   /*-------- end GlobalSetKbMode -------- */
 
 /*------------------------------------------------------------------------------
