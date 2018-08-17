@@ -105,9 +105,14 @@ void CWidget::mousePressEvent(QMouseEvent * pMouseEvent )
         printf("clearfocus\n");
         // m_buttonTest->clearFocus();
         focusWidget->clearFocus();
-        CKbNum::Instance()->setVisible( false );
-
-        // focusWidget->hide();
+        if ( CKbNum::Instance()->isVisible() )
+        {
+            CKbNum::Instance()->setVisible( false );
+        }
+        else if ( CKbInput::Instance()->isVisible())
+        {
+            CKbInput::Instance()->setVisible(false);
+        }
     }
 
 }
