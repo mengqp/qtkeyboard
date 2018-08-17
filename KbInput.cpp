@@ -372,21 +372,28 @@ void CKbInput::reClicked()
 
 void CKbInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
 {
+    //
     if ( GlobalGetKbMode() != KB_INPUT_MODE )
     {
         return ;
     }
+
+    if (this->isVisible() )
+    {
+        return;
+    }
+
     //qDebug() << "oldWidget:" << oldWidget << " nowWidget:" << nowWidget;
     if (nowWidget != 0 && !this->isAncestorOf(nowWidget)) {
         //在 Qt5 和 linux 系统中(嵌入式 linux 除外),当输入法面板关闭时,焦点会变成无,然后焦点会再次移到焦点控件处
         //这样导致输入法面板的关闭按钮不起作用,关闭后马上有控件获取焦点又显示.
         //为此,增加判断,当焦点是从有对象转为无对象再转为有对象时不要显示.
         //这里又要多一个判断,万一首个窗体的第一个焦点就是落在可输入的对象中,则要过滤掉
-#ifndef __arm__
-        if (oldWidget == 0x0 && !isFirst) {
-            return;
-        }
-#endif
+        // #ifndef __arm__
+        //         if (oldWidget == 0x0 && !isFirst) {
+        //             return;
+        //         }
+        // #endif
 
         isFirst = false;
         QWidget * pModalWidget = QApplication::activeModalWidget () ;
@@ -396,15 +403,15 @@ void CKbInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
         if (NULL != pModalWidget && pModalWidget->inherits("QDialog"))
         {
             Qt::WindowModality Modality = pModalWidget->windowModality();
-          /*Qt::NonModal       The window is not modal and does not block input to other windows.
-          非模态对话框
+            /*Qt::NonModal       The window is not modal and does not block input to other windows.
+              非模态对话框
 
-          Qt::WindowModal        The window is modal to a single window hierarchy and blocks input to its parent window, all grandparent windows, and all siblings of its parent and grandparent windows.
-          窗口级模态对话框，即只会阻塞父窗口、父窗口的父窗口及兄弟窗口。（半模态对话框）
+              Qt::WindowModal        The window is modal to a single window hierarchy and blocks input to its parent window, all grandparent windows, and all siblings of its parent and grandparent windows.
+              窗口级模态对话框，即只会阻塞父窗口、父窗口的父窗口及兄弟窗口。（半模态对话框）
 
-          Qt::ApplicationModal       The window is modal to the application and blocks input to all windows.
-          应用程序级模态对话框，即会阻塞整个应用程序的所有窗口。（半模态对话框）
-          */
+              Qt::ApplicationModal       The window is modal to the application and blocks input to all windows.
+              应用程序级模态对话框，即会阻塞整个应用程序的所有窗口。（半模态对话框）
+            */
             if(Qt::ApplicationModal == Modality)
             {
                 //需要将输入法切换到最初的原始状态--小写,同时将之前的对象指针置为零

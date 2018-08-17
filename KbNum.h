@@ -86,7 +86,7 @@ private:
     bool mousePressed;              //鼠标是否按下
 
     bool isFirst;                   //是否首次加载
-    bool isClose;
+    // bool isClose;
     void InitForm();                //初始化窗体数据
     void InitProperty();            //初始化属性
     void ChangeStyle();             //改变样式

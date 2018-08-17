@@ -65,7 +65,7 @@ void CKbNum::InitForm() //
 
     isFirst = true;
     isPress = false;
-    isClose = false;
+    // isClose = false;
     timerPress = new QTimer(this);
     connect(timerPress, SIGNAL(timeout()), this, SLOT(reClicked()));
     currentWidget = 0;
@@ -259,7 +259,7 @@ void CKbNum::btn_clicked()
         this->setVisible(false);
     } else if (objectName == "btnClose") {
         this->setVisible(false);
-        isClose = true;
+        // isClose = true;
     } else if (objectName == "btnSpace") {
         insertValue(" ");
     } else {
