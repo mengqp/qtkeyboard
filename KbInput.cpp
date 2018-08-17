@@ -228,7 +228,7 @@ void CKbInput::ShowPanel()
 //事件过滤器,用于识别鼠标单击汉字标签处获取对应汉字
 bool CKbInput::eventFilter(QObject *obj, QEvent *event)
 {
-    if ( getkeyboardmode() != 1 )
+    if ( GlobalGetKbMode() != KB_INPUT_MODE )
     {
         return false;
     }
@@ -369,7 +369,7 @@ void CKbInput::reClicked()
 
 void CKbInput::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
 {
-    if ( getkeyboardmode() != 1 )
+    if ( GlobalGetKbMode() != KB_INPUT_MODE )
     {
         return ;
     }
@@ -621,7 +621,7 @@ void CKbInput::btn_clicked()
     } else if (objectName == "btnClose") {
         this->setVisible(false);
     } else if (objectName == "btnSwitch") {
-        setkeyboardmode(0);
+        GlobalSetKbMode( KB_NUM_MODE );
         this->setVisible(false);
     } else if (objectName == "btnSpace") {
         insertValue(" ");

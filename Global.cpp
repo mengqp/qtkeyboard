@@ -16,36 +16,36 @@
 #include "KbNum.h"
 #include "KbInput.h"
 
-static int gs_keyboardmode = 0;
+static int gs_keyboardmode = KB_NUM_MODE;
 
 /*------------------------------------------------------------------------------
- * 函数名:setkeyboardmode
+ * 函数名:GlobalSetKbMode
  * 功能描述:设置键盘的类型
  * 参数: int mode 0 为数字键盘 1 为字母
  * 被调用:
  * 返回值:void
  ------------------------------------------------------------------------------*/
-void setkeyboardmode( int mode )
+void GlobalSetKbMode( int mode )
 {
     gs_keyboardmode =mode;
-    if ( 0 == mode )
+    if ( KB_NUM_MODE == mode )
     {
         CKbNum::Instance()->ShowKeyBoard();
     }
-    else
+    else if ( KB_INPUT_MODE == mode )
     {
         CKbInput::Instance()->ShowKeyBoard();
     }
-}   /*-------- end setkeyboardmode -------- */
+}   /*-------- end GlobalSetKbMode -------- */
 
 /*------------------------------------------------------------------------------
- * 函数名:getkeyboardmode
+ * 函数名:GlobalGetKbMode
  * 功能描述:
  * 参数:void
  * 被调用:
  * 返回值:int
  ------------------------------------------------------------------------------*/
-int getkeyboardmode(void)
+int GlobalGetKbMode(void)
 {
     return gs_keyboardmode;
-}   /*-------- end getkeyboardmode -------- */
+}   /*-------- end GlobalGetKbMode -------- */

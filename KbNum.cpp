@@ -114,88 +114,85 @@ void CKbNum::InitProperty()
 
 void CKbNum::focusChanged(QWidget *oldWidget, QWidget *nowWidget)
 {
-    if ( getkeyboardmode() != 0 )
+    if ( GlobalGetKbMode() != KB_NUM_MODE )
     {
         return ;
     }
-    else
-    {
-        printf("\n00000\n");
-    }
+
     if (this->isVisible() )
     {
         return;
     }
 
-            //qDebug() << "oldWidget:" << oldWidget << " nowWidget:" << nowWidget;
-            if (nowWidget != 0 && !this->isAncestorOf(nowWidget)) {
-                //在 Qt5 和 linux 系统中(嵌入式 linux 除外),当输入法面板关闭时,焦点会变成无,然后焦点会再次移到焦点控件处
-                //这样导致输入法面板的关闭按钮不起作用,关闭后马上有控件获取焦点又显示.
-                //为此,增加判断,当焦点是从有对象转为无对象再转为有对象时不要显示.
-                //这里又要多一个判断,万一首个窗体的第一个焦点就是落在可输入的对象中,则要过滤掉
+    //qDebug() << "oldWidget:" << oldWidget << " nowWidget:" << nowWidget;
+    if (nowWidget != 0 && !this->isAncestorOf(nowWidget)) {
+        //在 Qt5 和 linux 系统中(嵌入式 linux 除外),当输入法面板关闭时,焦点会变成无,然后焦点会再次移到焦点控件处
+        //这样导致输入法面板的关闭按钮不起作用,关闭后马上有控件获取焦点又显示.
+        //为此,增加判断,当焦点是从有对象转为无对象再转为有对象时不要显示.
+        //这里又要多一个判断,万一首个窗体的第一个焦点就是落在可输入的对象中,则要过滤掉
 #ifndef __arm__
-                // if (oldWidget == 0x0 && !isFirst &&!isClose)
-                // {
-                //     printf("oldwidget = %lu isfirst=%d\n" , (long)oldWidget, isFirst);
-                //     return;
-                // }
+        // if (oldWidget == 0x0 && !isFirst &&!isClose)
+        // {
+        //     printf("oldwidget = %lu isfirst=%d\n" , (long)oldWidget, isFirst);
+        //     return;
+        // }
 #endif
 
-                isFirst = false;
-                if (nowWidget->inherits("QLineEdit")) {
-                    currentLineEdit = (QLineEdit *)nowWidget;
-                    currentEditType = "QLineEdit";
-                    this->setVisible(true);
-                } else if (nowWidget->inherits("QTextEdit")) {
-                    currentTextEdit = (QTextEdit *)nowWidget;
-                    currentEditType = "QTextEdit";
-                    this->setVisible(true);
-                } else if (nowWidget->inherits("QPlainTextEdit")) {
-                    currentPlain = (QPlainTextEdit *)nowWidget;
-                    currentEditType = "QPlainTextEdit";
-                    this->setVisible(true);
-                } else if (nowWidget->inherits("QTextBrowser")) {
-                    currentBrowser = (QTextBrowser *)nowWidget;
-                    currentEditType = "QTextBrowser";
-                    this->setVisible(true);
-                } else if (nowWidget->inherits("QComboBox")) {
-                    QComboBox *cbox = (QComboBox *)nowWidget;
-                    //只有当下拉选择框处于编辑模式才可以输入
-                    if (cbox->isEditable()) {
-                        currentLineEdit = cbox->lineEdit() ;
-                        currentEditType = "QLineEdit";
-                        this->setVisible(true);
-                    }
-                } else if (nowWidget->inherits("QSpinBox") ||
-                           nowWidget->inherits("QDoubleSpinBox") ||
-                           nowWidget->inherits("QDateEdit") ||
-                           nowWidget->inherits("QTimeEdit") ||
-                           nowWidget->inherits("QDateTimeEdit")) {
-                    currentWidget = nowWidget;
-                    currentEditType = "QWidget";
-                    this->setVisible(true);
-                } else {
-                    currentWidget = 0;
-                    currentLineEdit = 0;
-                    currentTextEdit = 0;
-                    currentPlain = 0;
-                    currentBrowser = 0;
-                    currentEditType = "";
-                    this->setVisible(false);
-                }
-
-                QRect rect = nowWidget->rect();
-                QPoint pos = QPoint(rect.left(), rect.bottom() + 2);
-                pos = nowWidget->mapToGlobal(pos);
-                this->setGeometry(pos.x(), pos.y(), this->width(), this->height());
+        isFirst = false;
+        if (nowWidget->inherits("QLineEdit")) {
+            currentLineEdit = (QLineEdit *)nowWidget;
+            currentEditType = "QLineEdit";
+            this->setVisible(true);
+        } else if (nowWidget->inherits("QTextEdit")) {
+            currentTextEdit = (QTextEdit *)nowWidget;
+            currentEditType = "QTextEdit";
+            this->setVisible(true);
+        } else if (nowWidget->inherits("QPlainTextEdit")) {
+            currentPlain = (QPlainTextEdit *)nowWidget;
+            currentEditType = "QPlainTextEdit";
+            this->setVisible(true);
+        } else if (nowWidget->inherits("QTextBrowser")) {
+            currentBrowser = (QTextBrowser *)nowWidget;
+            currentEditType = "QTextBrowser";
+            this->setVisible(true);
+        } else if (nowWidget->inherits("QComboBox")) {
+            QComboBox *cbox = (QComboBox *)nowWidget;
+            //只有当下拉选择框处于编辑模式才可以输入
+            if (cbox->isEditable()) {
+                currentLineEdit = cbox->lineEdit() ;
+                currentEditType = "QLineEdit";
+                this->setVisible(true);
             }
+        } else if (nowWidget->inherits("QSpinBox") ||
+                   nowWidget->inherits("QDoubleSpinBox") ||
+                   nowWidget->inherits("QDateEdit") ||
+                   nowWidget->inherits("QTimeEdit") ||
+                   nowWidget->inherits("QDateTimeEdit")) {
+            currentWidget = nowWidget;
+            currentEditType = "QWidget";
+            this->setVisible(true);
+        } else {
+            currentWidget = 0;
+            currentLineEdit = 0;
+            currentTextEdit = 0;
+            currentPlain = 0;
+            currentBrowser = 0;
+            currentEditType = "";
+            this->setVisible(false);
+        }
+
+        QRect rect = nowWidget->rect();
+        QPoint pos = QPoint(rect.left(), rect.bottom() + 2);
+        pos = nowWidget->mapToGlobal(pos);
+        this->setGeometry(pos.x(), pos.y(), this->width(), this->height());
+    }
 
     Q_UNUSED(oldWidget);//未使用参数
 }
 
 bool CKbNum::eventFilter(QObject *obj, QEvent *event)
 {
-    if ( getkeyboardmode() != 0 )
+    if ( GlobalGetKbMode() != KB_NUM_MODE )
     {
         return false;
     }
@@ -258,7 +255,7 @@ void CKbNum::btn_clicked()
     if (objectName == "btnDelete") {
         deleteValue();
     } else if (objectName == "btnSwitch") {
-        setkeyboardmode(1);
+        GlobalSetKbMode(KB_INPUT_MODE);
         this->setVisible(false);
     } else if (objectName == "btnClose") {
         this->setVisible(false);

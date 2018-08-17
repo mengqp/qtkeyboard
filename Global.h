@@ -15,8 +15,12 @@
 #define GLOBAL_H
 
 
-void setkeyboardmode( int mode );
-int getkeyboardmode(void);
+const int KB_NUM_MODE = 1;
+const int KB_INPUT_MODE = 2;
+
+
+void GlobalSetKbMode( int mode );
+int GlobalGetKbMode(void);
 
 #endif /* GLOBAL_H */
 
